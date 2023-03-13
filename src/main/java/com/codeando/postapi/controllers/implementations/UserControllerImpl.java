@@ -4,6 +4,7 @@ import com.codeando.postapi.controllers.UserController;
 import com.codeando.postapi.dto.requests.UserCreateDto;
 import com.codeando.postapi.dto.responses.UserResponseDto;
 import com.codeando.postapi.services.UserService;
+import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/{id}")
-    public UserResponseDto findById(@PathVariable String id) {
+    public UserResponseDto findById(@Nonnull @PathVariable String id) {
         return service.findById(UUID.fromString(id));
     }
 
