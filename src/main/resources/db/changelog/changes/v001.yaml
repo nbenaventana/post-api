@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: nmb
+      changes:
+        - sql:
+            sql: CREATE EXTENSION "uuid-ossp";
+  - changeSet:
+      id: "2"
+      author: nmb
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: "uuid_generate_v4()"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                      nullable: false
+              - column:
+                  name: password
+                  type: varchar(50)
+                  constraints:
+                      nullable: false

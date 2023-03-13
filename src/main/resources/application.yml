@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://10.27.1.114:5432/post_react
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: true
