@@ -2,6 +2,7 @@ package com.codeando.postapi.controllers;
 
 import com.codeando.postapi.dto.responses.ErrorResponseBody;
 import com.codeando.postapi.exceptions.EntityNotFoundException;
+import com.codeando.postapi.exceptions.UserEmailAlreadyExist;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -29,5 +30,13 @@ public class HandlerController extends ResponseEntityExceptionHandler {
                                                           HttpServletResponse response) {
         log.error(exception);
         return handleExceptionInternal(exception,new ErrorResponseBody(exception.getMessage()) , new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(UserEmailAlreadyExist.class)
+    public ResponseEntity<?> handleUserEmailAlreadyExist(UserEmailAlreadyExist exception,
+                                                          WebRequest request,
+                                                          HttpServletResponse response) {
+        log.error(exception);
+        return handleExceptionInternal(exception,new ErrorResponseBody(exception.getMessage()) , new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
