@@ -2,9 +2,10 @@ package com.codeando.postapi.services.implementations;
 
 import com.codeando.postapi.dto.requests.UserCreateDto;
 import com.codeando.postapi.dto.responses.UserResponseDto;
+import com.codeando.postapi.exceptions.EntityNotFoundException;
+import com.codeando.postapi.exceptions.UserEmailAlreadyExist;
 import com.codeando.postapi.repository.UserRepository;
 import com.codeando.postapi.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(UUID id) {
-        return mapper.toDto(repository.findById(id).orElseThrow(EntityNotFoundException::new));
+        return mapper.toDto(repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No se encontró el usuario con id: " + id)));
     }
 
     @Override
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto createUser(UserCreateDto dto) {
+        if (repository.existsByEmail(dto.getEmail()))
+            throw new UserEmailAlreadyExist("Ya existe un usuario con el email: " + dto.getEmail());
+
         return mapper.toDto(repository.save(mapper.toUser(dto)));
     }
 }
