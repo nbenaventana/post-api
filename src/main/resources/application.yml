@@ -5,3 +5,7 @@ spring:
     password: postgres
   jpa:
     open-in-view: true
+server:
+  port: 8080
+  servlet:
+      context-path: /post-api
