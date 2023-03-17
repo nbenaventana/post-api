@@ -9,3 +9,9 @@ server:
   port: 8080
   servlet:
       context-path: /post-api
+security:
+  token_secret: M8hSAIR9gSahUyFED3Ife2ktORagTNae
+  token_expiration_time: 86400000
+  token_prefix: Bearer
+  header_string: Authorization
+  sign_up_url: /users
