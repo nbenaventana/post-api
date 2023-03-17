@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,16 +32,27 @@ public class SecurityConfig {
                 .cors().and().csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(
-                        "/swagger-ui/**","/v3/api-docs", "/swagger-resources/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilter(new AuthenticationFilter(
-                        authenticationManager(
-                                authenticationProvider(userDetailsService, passwordEncoder())
-                        )
-                ))
+                .and()
+                .addFilter(getAuthenticationFilter())
+                .addFilter(new AuthorizationFilter(authenticationManager(
+                        authenticationProvider(userDetailsService, passwordEncoder()))))
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .build();
 
+    }
+
+    public AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter =
+                new AuthenticationFilter(authenticationManager(
+                        authenticationProvider(userDetailsService, passwordEncoder())));
+
+        filter.setFilterProcessesUrl("/users/login");
+
+        return filter;
     }
 
     @Bean
