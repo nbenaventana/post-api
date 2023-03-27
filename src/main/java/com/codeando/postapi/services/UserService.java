@@ -14,4 +14,7 @@ public interface UserService extends UserDetailsService {
         Page<UserResponseDto> findAll(Pageable pageable);
 
         UserResponseDto createUser(UserCreateDto dto);
+
+        UserResponseDto findByEmail(String email);
+
 }

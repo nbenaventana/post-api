@@ -42,4 +42,11 @@ public interface UserController {
     @ResponseStatus(HttpStatus.CREATED)
     UserResponseDto createUser(@RequestBody UserCreateDto userCreateDto);
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Invalid request, error en los parametros de entrada.")
+    })
+    @Operation(summary = "Devuelve los datos del usuario autenticado")
+    UserResponseDto getUser();
+
 }

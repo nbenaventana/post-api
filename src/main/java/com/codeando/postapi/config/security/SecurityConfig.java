@@ -1,5 +1,6 @@
 package com.codeando.postapi.config.security;
 
+import com.codeando.postapi.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,8 +22,11 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    private final UserService userService;
+
+    public SecurityConfig(UserDetailsService userDetailsService, UserService userService) {
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @Bean
@@ -48,7 +52,7 @@ public class SecurityConfig {
     public AuthenticationFilter getAuthenticationFilter() throws Exception {
         final AuthenticationFilter filter =
                 new AuthenticationFilter(authenticationManager(
-                        authenticationProvider(userDetailsService, passwordEncoder())));
+                        authenticationProvider(userDetailsService, passwordEncoder())), userService);
 
         filter.setFilterProcessesUrl("/users/login");
 

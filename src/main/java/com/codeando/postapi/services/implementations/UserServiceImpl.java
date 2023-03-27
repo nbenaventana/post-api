@@ -49,6 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponseDto findByEmail(String email) {
+        return mapper.toDto(repository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("No se encontró el usuario con email: " + email)));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User userEntity = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("No se encontró el usuario con email: " + email));
