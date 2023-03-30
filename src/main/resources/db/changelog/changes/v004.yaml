@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: "5"
+      author: nmb
+      changes:
+        - insert:
+            tableName: exposures
+            columns:
+              - column:
+                  name: type
+                  value: "Publico"
+        - insert:
+            tableName: exposures
+            columns:
+              - column:
+                  name: type
+                  value: "Privado"

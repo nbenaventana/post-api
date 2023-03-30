@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: "3"
+      author: nmb
+      changes:
+        - modifyDataType:
+            tableName: users
+            columnName: password
+            newDataType: varchar(64)
+            columnDataType: varchar(50)
