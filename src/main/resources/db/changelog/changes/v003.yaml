@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: "1"
+      id: "4"
       author: nmb
       changes:
         - createTable:
@@ -25,12 +25,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: created_at
-                  type: timestamp
+                  type: datetime
                   constraints:
                     nullable: false
               - column:
                   name: expiration_date
-                  type: timestamp
+                  type: datetime
                   constraints:
                     nullable: false
               - column:

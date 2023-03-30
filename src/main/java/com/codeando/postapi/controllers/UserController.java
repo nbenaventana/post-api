@@ -8,14 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RequestMapping(value = "/users",
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE)
 public interface UserController {
 
     @ApiResponses(value = {

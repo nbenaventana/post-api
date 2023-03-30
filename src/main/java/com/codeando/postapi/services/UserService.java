@@ -1,7 +1,6 @@
 package com.codeando.postapi.services;
 
-import com.codeando.postapi.dto.requests.UserCreateDto;
-import com.codeando.postapi.dto.responses.UserResponseDto;
+import com.codeando.postapi.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,12 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.UUID;
 
 public interface UserService extends UserDetailsService {
-        UserResponseDto findById(UUID id);
+        User findById(UUID id);
 
-        Page<UserResponseDto> findAll(Pageable pageable);
+        Page<User> findAll(Pageable pageable);
 
-        UserResponseDto createUser(UserCreateDto dto);
+        User createUser(User user);
 
-        UserResponseDto findByEmail(String email);
+        User findByEmail(String email);
 
 }

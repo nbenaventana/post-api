@@ -3,6 +3,7 @@ package com.codeando.postapi.controllers.implementations;
 import com.codeando.postapi.controllers.UserController;
 import com.codeando.postapi.dto.requests.UserCreateDto;
 import com.codeando.postapi.dto.responses.UserResponseDto;
+import com.codeando.postapi.mappers.UserMapper;
 import com.codeando.postapi.services.UserService;
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
@@ -20,8 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserControllerImpl implements UserController {
+
+    UserMapper MAPPER = UserMapper.INSTANCE;
 
     private final UserService service;
 
@@ -32,26 +37,26 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/{id}")
     public UserResponseDto findById(@Nonnull @PathVariable String id) {
-        return service.findById(UUID.fromString(id));
+        return MAPPER.toDto(service.findById(UUID.fromString(id)));
     }
 
     @Override
     @GetMapping
     public Page<UserResponseDto> findAll(Pageable pageable) {
-        return service.findAll(pageable);
+        return service.findAll(pageable).map(MAPPER::toDto);
     }
 
     @Override
     @PostMapping
     public UserResponseDto createUser(@RequestBody UserCreateDto dto) {
-        return service.createUser(dto);
+        return MAPPER.toDto(service.createUser(MAPPER.toUser(dto)));
     }
 
     @Override
     @GetMapping(value = "/auth", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserResponseDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return service.findByEmail(authentication.getPrincipal().toString());
+        return MAPPER.toDto(service.findByEmail(authentication.getPrincipal().toString()));
     }
 
 }
