@@ -1,5 +1,6 @@
 package com.codeando.postapi.repository;
 
+import com.codeando.postapi.entity.Exposure;
 import com.codeando.postapi.entity.Post;
 import com.codeando.postapi.entity.User;
 import org.springframework.data.domain.Page;
@@ -14,5 +15,7 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
     Page<Post> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
+
+    Page<Post> findAllByExposureOrderByCreatedAtDesc(Exposure exposure, Pageable pageable);
 
 }

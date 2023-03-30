@@ -26,4 +26,11 @@ public interface PostController {
     @Operation(summary = "Obtiene todos los posts de un usuario.")
     public Page<PostResponseDto> findAllByUser(Pageable pageable);
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Error en los parametros de entrada.")
+    })
+    @Operation(summary = "Obtiene todos los posts publicos que no han expirado.")
+    public Page<PostResponseDto> findLastPublic(Pageable pageable);
+
 }

@@ -8,4 +8,6 @@ public interface ExposureService {
 
     Exposure create(Exposure exposure);
 
+    Exposure findByName(String name);
+
 }

@@ -66,4 +66,11 @@ public class PostControllerImpl implements PostController {
 
     }
 
+    @Override
+    @GetMapping("/last-public")
+    public Page<PostResponseDto> findLastPublic(Pageable pageable) {
+        Exposure exposure = exposureService.findByName("Publico");
+        return service.findLastPublic(exposure, pageable).map(MAPPER::toDto);
+    }
+
 }

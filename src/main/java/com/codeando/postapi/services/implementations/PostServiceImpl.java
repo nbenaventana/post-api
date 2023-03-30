@@ -1,6 +1,7 @@
 package com.codeando.postapi.services.implementations;
 
 import com.codeando.postapi.dto.responses.PostResponseDto;
+import com.codeando.postapi.entity.Exposure;
 import com.codeando.postapi.entity.Post;
 
 import com.codeando.postapi.entity.User;
@@ -30,4 +31,10 @@ public class PostServiceImpl implements PostService {
     public Page<Post> findAllByUser(User user, Pageable pageable) {
         return repository.findAllByUserOrderByCreatedAtDesc(user, pageable);
     }
+
+    @Override
+    public Page<Post> findLastPublic(Exposure exposure, Pageable pageable) {
+        return repository.findAllByExposureOrderByCreatedAtDesc(exposure, pageable);
+    }
+
 }
