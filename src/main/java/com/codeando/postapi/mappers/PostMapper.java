@@ -1,6 +1,7 @@
 package com.codeando.postapi.mappers;
 
 import com.codeando.postapi.dto.requests.PostCreateDto;
+import com.codeando.postapi.dto.requests.PostModifyDto;
 import com.codeando.postapi.dto.responses.PostResponseDto;
 import com.codeando.postapi.entity.Post;
 import org.mapstruct.Mapper;
@@ -25,5 +26,11 @@ public interface PostMapper {
 
     @Mapping(target = "isExpired", expression = "java(post.getExpirationDate().isBefore(LocalDateTime.now()))")
     PostResponseDto toDto(Post post);
+
+    @Mapping(target = "expirationDate",
+            expression = "java(new Date(System.currentTimeMillis() + (dto.getExpirationTime() * 60000))" +
+                    ".toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())")
+    @Mapping(source = "dto.exposureId", target = "exposure.id")
+    Post toPost(PostModifyDto dto);
 
 }
