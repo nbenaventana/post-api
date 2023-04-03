@@ -3,6 +3,7 @@ package com.codeando.postapi.controllers;
 import com.codeando.postapi.dto.responses.ErrorResponseBody;
 import com.codeando.postapi.exceptions.EntityNotFoundException;
 import com.codeando.postapi.exceptions.UserEmailAlreadyExist;
+import com.codeando.postapi.exceptions.UserNotAllowedException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -39,4 +40,13 @@ public class HandlerController extends ResponseEntityExceptionHandler {
         log.error(exception);
         return handleExceptionInternal(exception,new ErrorResponseBody(exception.getMessage()) , new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler(UserNotAllowedException.class)
+    public ResponseEntity<?> handleUserNotAllowedException(UserNotAllowedException exception,
+                                                          WebRequest request,
+                                                          HttpServletResponse response) {
+        log.error(exception);
+        return handleExceptionInternal(exception,new ErrorResponseBody(exception.getMessage()) , new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+
 }

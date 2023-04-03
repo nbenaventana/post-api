@@ -2,13 +2,12 @@ package com.codeando.postapi.controllers.implementations;
 
 import com.codeando.postapi.controllers.PostController;
 import com.codeando.postapi.dto.requests.PostCreateDto;
+import com.codeando.postapi.dto.requests.PostModifyDto;
 import com.codeando.postapi.dto.responses.PostResponseDto;
 import com.codeando.postapi.entity.Exposure;
 import com.codeando.postapi.entity.Post;
 import com.codeando.postapi.entity.User;
-import com.codeando.postapi.exceptions.EntityNotFoundException;
 import com.codeando.postapi.mappers.PostMapper;
-import com.codeando.postapi.repository.ExposureRepository;
 import com.codeando.postapi.services.ExposureService;
 import com.codeando.postapi.services.PostService;
 import com.codeando.postapi.services.UserService;
@@ -17,10 +16,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/posts",
@@ -71,6 +76,27 @@ public class PostControllerImpl implements PostController {
     public Page<PostResponseDto> findLastPublic(Pageable pageable) {
         Exposure exposure = exposureService.findByName("Publico");
         return service.findLastPublic(exposure, pageable).map(MAPPER::toDto);
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        service.deletePost(UUID.fromString(id),
+                userService.findByEmail(authentication.getPrincipal().toString()).getId());
+
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    public PostResponseDto modifyPost(@PathVariable String id, @RequestBody PostModifyDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return MAPPER.toDto(
+                service.modifyPost(UUID.fromString(id),
+                        userService.findByEmail(authentication.getPrincipal().toString()).getId(),
+                        MAPPER.toPost(dto)));
     }
 
 }
